@@ -1,0 +1,85 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-dot: #e2e8f0;
+  }
+
+  body {
+    @apply bg-[#fbfcfe] text-slate-800 font-sans antialiased;
+  }
+
+  ::selection {
+    background-color: #4f46e5;
+    color: #ffffff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Elegant Background Dot Pattern */
+.bg-grid-subtle {
+  background-image: radial-gradient(circle at 1px 1px, rgba(148, 163, 184, 0.22) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.bg-hero-glow {
+  background: 
+    radial-gradient(1000px 500px at 50% -10%, rgba(99, 102, 241, 0.12), transparent 70%),
+    radial-gradient(800px 400px at 85% 15%, rgba(236, 72, 153, 0.08), transparent 60%),
+    #fbfcfe;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Sleek UI Helpers */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.card-crafted {
+  @apply bg-white rounded-2xl border border-slate-200/90 shadow-card transition-all duration-300;
+}
+
+.card-crafted:hover {
+  @apply shadow-card-hover border-slate-300/90 -translate-y-0.5;
+}
+
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white bg-slate-900 hover:bg-slate-800 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-slate-900/10;
+}
+
+.btn-brand {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-700 active:scale-[0.98] transition-all duration-200 shadow-md shadow-brand-500/20 hover:shadow-brand-500/30;
+}
+
+.btn-secondary {
+  @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 active:scale-[0.98] transition-all duration-200 shadow-subtle;
+}
