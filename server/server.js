@@ -25,13 +25,18 @@ const PORT = process.env.PORT || 5000;
 // CORS — only needed for dev (Vite dev server on :5173)
 // In production both are on same origin so CORS isn't needed,
 // but keeping it doesn't hurt.
+// CORS: allow same-origin (production) or all (dev)
+// CLIENT_URL env var on Render should be the deployed Render URL
+const allowedOrigins = process.env.CLIENT_URL
+  ? [process.env.CLIENT_URL]
+  : true; // true = allow all (dev)
+
 app.use(
   cors({
-    origin: process.env.NODE_ENV === 'production'
-      ? `http://localhost:${PORT}`
-      : '*',
+    origin: allowedOrigins,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
   })
 );
 app.use(express.json());
