@@ -38,33 +38,34 @@ const getSafeDbDiagnostics = (rawUri) => {
 };
 
 export const connectDB = async () => {
-  let uri = (process.env.MONGO_URI || process.env.MONGODB_URI || '').trim().replace(/^["']|["']$/g, '');
+  let rawUri = (process.env.MONGO_URI || process.env.MONGODB_URI || '').trim().replace(/^["']|["']$/g, '');
 
-  if (!uri) {
+  if (!rawUri) {
     console.warn('⚠️  MONGO_URI / MONGODB_URI not set — activating in-memory store');
     isUsingMemoryStore = true;
     return;
   }
 
-  const diag = getSafeDbDiagnostics(uri);
+  // Automatically sanitize URI: strip surrounding quotes, trim whitespace,
+  // and auto-strip placeholder angle brackets <password> -> password
+  let sanitizedUri = rawUri;
+  const hadAngleBrackets = rawUri.includes('<') || rawUri.includes('>');
+  if (hadAngleBrackets) {
+    sanitizedUri = rawUri.replace(/<([^>]+)>/g, '$1').replace(/[<>]/g, '');
+    console.log(`ℹ️  Auto-sanitizing MONGO_URI: stripped placeholder angle brackets '<' and '>'.`);
+  }
+
+  const diag = getSafeDbDiagnostics(sanitizedUri);
   console.log(`📡 MongoDB Diagnostics:`);
   console.log(`   - MONGO_URI detected: ✅ Yes`);
   console.log(`   - Protocol valid: ${diag.startsWithProtocol ? '✅' : '❌'}`);
   console.log(`   - Target Host: ${diag.host}`);
   console.log(`   - Target DB: ${diag.dbName}`);
   console.log(`   - DB User: ${diag.user}`);
-  
-  if (diag.hasAngleBrackets) {
-    console.warn(`   ⚠️ CRITICAL WARNING: MONGO_URI contains angle brackets '<' or '>'.`);
-    console.warn(`      Make sure you replaced <password> with your actual password (without the '<' and '>').`);
-  }
-  if (diag.hasWhitespace) {
-    console.warn(`   ⚠️ WARNING: MONGO_URI contains leading, trailing or internal whitespace.`);
-  }
 
   try {
     console.log(`📡 Connecting to MongoDB Atlas...`);
-    const conn = await mongoose.connect(uri, {
+    const conn = await mongoose.connect(sanitizedUri, {
       serverSelectionTimeoutMS: 10000, // 10s timeout
     });
     console.log(`✅ MongoDB Atlas Connected Successfully: ${conn.connection.host}/${conn.connection.name}`);
