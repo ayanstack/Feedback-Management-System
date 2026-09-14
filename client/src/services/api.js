@@ -1,8 +1,9 @@
+import axios from 'axios';
+
 // In production: both frontend and backend are served from the same origin (Render).
 // Using a relative path /api means Axios calls go to the same host — no hardcoded URL needed.
 // In dev: Vite proxy forwards /api to localhost:5000 (configured in vite.config.js).
 const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
-
 
 const api = axios.create({
   baseURL: API_BASE_URL,
