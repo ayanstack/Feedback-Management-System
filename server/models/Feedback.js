@@ -41,7 +41,7 @@ const feedbackSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ['General', 'Content', 'Speaker', 'Organization', 'Venue/Tech'],
+      enum: ['General', 'Content', 'Speaker', 'Organization', 'Venue/Tech', 'Design', 'Technology', 'Other'],
       default: 'General',
     },
     recommend: {
